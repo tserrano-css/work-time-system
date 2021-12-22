@@ -1,8 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsAlphanumeric, IsLowercase, IsNotEmpty, IsNumber, IsString, Length, Max, Min } from 'class-validator';
+import {
+  IsAlphanumeric,
+  IsLowercase,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  Length,
+  Max,
+  Min,
+} from 'class-validator';
 
 export class CreateProjectDto {
-  @ApiProperty({ description: 'Key única de 8-16 carácteres alfanuméricos en minúscula de proyecto', example: 'martes2345' })
+  @ApiProperty({
+    description:
+      'Key única de 8-16 carácteres alfanuméricos en minúscula de proyecto',
+    example: 'martes2345',
+  })
   @IsAlphanumeric()
   @IsLowercase()
   @IsNotEmpty()
