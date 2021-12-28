@@ -17,6 +17,8 @@ async function bootstrap() {
     .setDescription('The work time system API description')
     .setVersion('1.0')
     .addTag('projects')
+    .addTag('work-time-logs')
+    .addTag('total-time-logs')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

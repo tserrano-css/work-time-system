@@ -1,4 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateProjectDto } from './dto/create-project.dbo';
 import { UpdateProjectDto } from './dto/update-project.dbo';
 import { Project } from './entities/project.entity';
@@ -32,28 +34,59 @@ const mock: Project[] = [
 
 @Injectable()
 export class ProjectsService {
-  getManyProjects(): Project[] {
-    return mock;
+
+  constructor(
+    @InjectRepository(Project)
+    private readonly projectRepository: Repository<Project>,
+  ) {}
+
+  getManyProjects(): Promise<Project[]> {
+    return this.projectRepository.find();
   }
 
-  getOneProject(projectId: number): Project {
-    throw new Error('Method not implemented.');
+  getOneProject(projectId: number): Promise<Project> {
+    return this.projectRepository.findOne(projectId);
   }
 
-  createOneProject(projectDto: CreateProjectDto): Project {
-    const a = mock[0];
-    return { ...a, ...projectDto };
+  async createOneProject(projectDto: CreateProjectDto): Promise<Project> {
+    const countExist = await this.projectRepository.count({
+      where: {
+        key: projectDto.key,
+      },
+    });
+
+    if (countExist > 0) {
+      throw new ConflictException(`La key ${projectDto.key} ya existe`);
+    }
+
+    const tempEntity = await this.projectRepository.create(projectDto);
+    return this.projectRepository.save(tempEntity);
   }
 
-  partialUpdateOneProject(
+  async partialUpdateOneProject(
     projectId: number,
     updateProjectDto: UpdateProjectDto,
-  ): Project {
-    const res = mock.find((project) => (project.id = projectId));
-    return { ...res, ...updateProjectDto };
+  ): Promise<Project> {
+    const preloadData = {
+      id: projectId,
+      ...updateProjectDto,
+    };
+    const preloadProject = await this.projectRepository.preload(preloadData);
+
+    if (!preloadProject){
+      throw new NotFoundException('El proyecto no existe');
+    }
+
+    return this.projectRepository.save(preloadProject);
   }
 
-  deleateOneProject(projectId: number) {
-    throw new Error('Method not implemented.');
+  async deleateOneProject(projectId: number): Promise<void> {
+    const project = await this.projectRepository.findOne(projectId);
+
+    if (!project) {
+      return;
+    }
+
+    this.projectRepository.delete(project);
   }
 }

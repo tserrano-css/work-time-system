@@ -1,17 +1,39 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('projects')
 export class Project {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
+
+  @ApiProperty({
+    description:
+      'Código alphanumérico 8-16 dígitos en letres minúsculas unico para cada proyecto',
+  })
+  @Column({
+    type: 'character varying',
+    unique: true,
+    comment: 'Key unica del proyecto',
+    length: 16,
+  })
   key: string;
-  @Column()
+
+  @ApiProperty({ description: 'Titulo' })
+  @Column({
+    type: 'character varying',
+    comment: 'Titulo del proyecto',
+    length: 80,
+  })
   title: string;
-  @Column()
+
+  @ApiProperty({ description: 'Descripcion' })
+  @Column({ type: 'text'})
   description: string;
+
+  @ApiProperty({ description: 'Horas planificadas', type: 'integer' })
   @Column({ name: 'planned_hours', type: 'integer' })
   plannedHours: number;
 
-  owner: any;
+  owner?: any;
 }

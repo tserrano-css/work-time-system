@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProjectsModule } from './projects/projects.module';
+import { WorkTimeLogsModule } from './work-time-logs/work-time-logs.module';
+import { TotalTimeLogsModule } from './total-time-logs/total-time-logs.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { ProjectsModule } from './projects/projects.module';
       synchronize: true,
     }),
     ProjectsModule,
+    WorkTimeLogsModule,
+    TotalTimeLogsModule,
   ],
   controllers: [],
   providers: [],

@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Patch,
@@ -23,19 +24,26 @@ export class ProjectsController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  getManyProjects(): Project[] {
+  getManyProjects(): Promise<Project[]> {
     return this.projectsService.getManyProjects();
   }
 
   @Get(':projectId')
   @HttpCode(HttpStatus.OK)
-  getOneProject(@Param('projectId', ParseIntPipe) projectId: number): Project {
-    return this.projectsService.getOneProject(projectId);
+  async getOneProject(
+    @Param('projectId', ParseIntPipe) projectId: number,
+  ): Promise<Project> {
+    const project = await this.projectsService.getOneProject(projectId);
+
+    if (!project) {
+      throw new NotFoundException(`Proyecto con id ${projectId} no existe`);
+    }
+    return project;
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createOneProject(@Body() projectDto: CreateProjectDto): Project {
+  createOneProject(@Body() projectDto: CreateProjectDto): Promise<Project> {
     return this.projectsService.createOneProject(projectDto);
   }
 
@@ -44,7 +52,7 @@ export class ProjectsController {
   partialUpdateOneProject(
     @Param('projectId', ParseIntPipe) projectId: number,
     @Body() updateProjectDto: UpdateProjectDto,
-  ): Project {
+  ): Promise<Project> {
     return this.projectsService.partialUpdateOneProject(
       projectId,
       updateProjectDto,
