@@ -4,6 +4,6 @@ import { TotalTimeLogsController } from './total-time-logs.controller';
 
 @Module({
   controllers: [TotalTimeLogsController],
-  providers: [TotalTimeLogsService]
+  providers: [TotalTimeLogsService],
 })
 export class TotalTimeLogsModule {}

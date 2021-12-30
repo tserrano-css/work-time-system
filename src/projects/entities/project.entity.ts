@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { WorkTimeLog } from 'src/work-time-logs/entities/work-time-log.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('projects')
 export class Project {
@@ -28,7 +29,7 @@ export class Project {
   title: string;
 
   @ApiProperty({ description: 'Descripcion' })
-  @Column({ type: 'text'})
+  @Column({ type: 'text' })
   description: string;
 
   @ApiProperty({ description: 'Horas planificadas', type: 'integer' })
@@ -36,4 +37,7 @@ export class Project {
   plannedHours: number;
 
   owner?: any;
+
+  @OneToMany(() => WorkTimeLog, (workTimeLog) => workTimeLog.project)
+  workTimeLogs: WorkTimeLog[];
 }
