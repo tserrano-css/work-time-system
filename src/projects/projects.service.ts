@@ -1,4 +1,8 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateProjectDto } from './dto/create-project.dbo';
@@ -34,7 +38,6 @@ const mock: Project[] = [
 
 @Injectable()
 export class ProjectsService {
-
   constructor(
     @InjectRepository(Project)
     private readonly projectRepository: Repository<Project>,
@@ -73,7 +76,7 @@ export class ProjectsService {
     };
     const preloadProject = await this.projectRepository.preload(preloadData);
 
-    if (!preloadProject){
+    if (!preloadProject) {
       throw new NotFoundException('El proyecto no existe');
     }
 
