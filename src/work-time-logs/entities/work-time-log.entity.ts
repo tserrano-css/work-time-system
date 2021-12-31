@@ -19,9 +19,16 @@ export class WorkTimeLog {
   @Column({ name: 'date', type: 'date' })
   date: Date;
 
+  @Column({ name: 'user_id' })
+  userId: number;
+
+  @Column({ name: 'project_id' })
+  projectId: number;
+
   @ManyToOne(() => User, (user) => user.workTimeLogs, {
     onUpdate: 'CASCADE',
     onDelete: 'NO ACTION',
+    eager: true /*es para devolver las relación en la api*/,
   })
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;

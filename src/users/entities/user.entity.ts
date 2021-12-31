@@ -22,5 +22,5 @@ export class User {
   email: string;
 
   @OneToMany(() => WorkTimeLog, (workTimeLog) => workTimeLog.user)
-  workTimeLogs: WorkTimeLog[];
+  workTimeLogs?: WorkTimeLog[];
 }
