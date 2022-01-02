@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { WorkTimeLogsService } from './work-time-logs.service';
 import { CreateWorkTimeLogDto } from './dto/create-work-time-log.dto';
@@ -15,6 +17,7 @@ import { User } from 'src/users/entities/user.entity';
 
 @ApiTags('work-time-logs')
 @Controller('work-time-logs')
+@UseInterceptors(ClassSerializerInterceptor)
 export class WorkTimeLogsController {
   constructor(private readonly workTimeLogsService: WorkTimeLogsService) {}
 

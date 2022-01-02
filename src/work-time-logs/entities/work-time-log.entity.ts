@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Project } from 'src/projects/entities/project.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
@@ -19,9 +20,11 @@ export class WorkTimeLog {
   @Column({ name: 'date', type: 'date' })
   date: Date;
 
+  @Exclude()
   @Column({ name: 'user_id' })
   userId: number;
 
+  @Exclude()
   @Column({ name: 'project_id' })
   projectId: number;
 
@@ -36,6 +39,7 @@ export class WorkTimeLog {
   @ManyToOne(() => Project, (project) => project.workTimeLogs, {
     onUpdate: 'CASCADE',
     onDelete: 'NO ACTION',
+    eager: true,
   })
   @JoinColumn({ name: 'project_id', referencedColumnName: 'id' })
   project: Project;

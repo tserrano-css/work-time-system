@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Project } from 'src/projects/entities/project.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateWorkTimeLogDto } from './dto/create-work-time-log.dto';
@@ -14,7 +13,10 @@ export class WorkTimeLogsService {
     private readonly workTimeLogRepository: Repository<WorkTimeLog>,
   ) {}
 
-  async create(createWorkTimeLogDto: CreateWorkTimeLogDto, user: User): Promise<WorkTimeLog> {
+  async create(
+    createWorkTimeLogDto: CreateWorkTimeLogDto,
+    user: User,
+  ): Promise<WorkTimeLog> {
     const tempEntity = await this.workTimeLogRepository.create({
       ...createWorkTimeLogDto,
       user: user,
@@ -23,7 +25,9 @@ export class WorkTimeLogsService {
   }
 
   findAll() {
-    return this.workTimeLogRepository.find();
+    return this.workTimeLogRepository.find({
+      //relations: ['user'], //para devolver la relacion de user
+    });
   }
 
   findOne(id: number) {
