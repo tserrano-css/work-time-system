@@ -5,6 +5,7 @@ import { WorkTimeLogsModule } from './work-time-logs/work-time-logs.module';
 import { TotalTimeLogsModule } from './total-time-logs/total-time-logs.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -35,6 +36,7 @@ import configuration from './config/configuration';
     WorkTimeLogsModule,
     TotalTimeLogsModule,
     UsersModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
