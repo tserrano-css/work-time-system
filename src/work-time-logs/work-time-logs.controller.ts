@@ -23,6 +23,7 @@ export class WorkTimeLogsController {
 
   @Post()
   create(@Body() createWorkTimeLogDto: CreateWorkTimeLogDto) {
+    /*
     const user: User = {
       id: 2,
       username: 'miusername',
@@ -33,6 +34,7 @@ export class WorkTimeLogsController {
     };
 
     return this.workTimeLogsService.create(createWorkTimeLogDto, user);
+    */
   }
 
   @Get()

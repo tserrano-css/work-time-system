@@ -17,6 +17,8 @@ async function bootstrap() {
     .setTitle('Work Time System example')
     .setDescription('The work time system API description')
     .setVersion('1.0')
+    .addTag('auth')
+    .addTag('users')
     .addTag('projects')
     .addTag('work-time-logs')
     .addTag('total-time-logs')

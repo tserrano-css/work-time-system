@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateUserAccountDto } from './dto/create-user-account.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -12,17 +13,21 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    const user = this.userRepository.create({
-      username: 'miusername',
-      email: 'miusername@gmail.com',
-      password: 'pass',
-      name: 'Alberto',
-      lastName: 'Morales',
+  async create(dto: CreateUserAccountDto): Promise<User> {
+    const loadedUser = await this.userRepository.findOne({
+      where: [{ username: dto.username }, { email: dto.email }], //esto es un OR si fuera un AND seria [{ username: dto.username, email: dto.email }]
     });
 
-    this.userRepository.save(user);
-    return 'This action adds a new user';
+    if (loadedUser && loadedUser.username === dto.username) {
+      throw new ConflictException('username is not available');
+    }
+
+    if (loadedUser && loadedUser.email === dto.email) {
+      throw new ConflictException('email is not available');
+    }
+
+    const tempEntity = this.userRepository.create(dto);
+    return this.userRepository.save(tempEntity);
   }
 
   findAll() {
