@@ -7,6 +7,21 @@ import { UsersService } from 'src/users/users.service';
 export class AuthService {
   constructor(private usersServices: UsersService) {}
 
+  async validateLoginCredentials(
+    username: string,
+    password: string,
+  ): Promise<User | null> {
+    const user: User = await this.usersServices.getOneUserIncludingPass(
+      username,
+    );
+
+    if (user && (await user.validatePassword(password))) {
+      return user;
+    }
+
+    return null;
+  }
+
   async create(dto: CreateUserAccountDto): Promise<User> {
     return await this.usersServices.create(dto);
   }

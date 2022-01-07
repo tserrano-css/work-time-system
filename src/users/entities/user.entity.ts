@@ -46,6 +46,10 @@ export class User {
     this.password = await bcrypt.hash(this.password, salt);
   }
 
+  public async validatePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
+  }
+
   static toDto(user: User): UserResponseDto {
     return {
       id: user.id,

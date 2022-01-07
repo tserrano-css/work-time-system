@@ -30,6 +30,15 @@ export class UsersService {
     return this.userRepository.save(tempEntity);
   }
 
+  getOneUserIncludingPass(username: string): Promise<User> {
+    const queryBuilder = this.userRepository.createQueryBuilder('user'); //user es un alias para las consultas
+    queryBuilder
+      .where(`user.username ='${username}'`)
+      .addSelect('user.password');
+
+    return queryBuilder.getOne();
+  }
+
   findAll() {
     return `This action returns all users`;
   }
