@@ -6,14 +6,17 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { TotalTimeLogsService } from './total-time-logs.service';
 import { CreateTotalTimeLogDto } from './dto/create-total-time-log.dto';
 import { UpdateTotalTimeLogDto } from './dto/update-total-time-log.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @ApiTags('total-time-logs')
 @Controller('total-time-logs')
+@UseGuards(JwtAuthGuard)
 export class TotalTimeLogsController {
   constructor(private readonly totalTimeLogsService: TotalTimeLogsService) {}
 

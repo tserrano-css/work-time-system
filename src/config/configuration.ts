@@ -10,4 +10,9 @@ export default () => ({
     synchronize: process.env.DATABASE_SYNC === 'true',
     autoLoadEntities: true,
   },
+  jwt: {
+    jwt_access_expiresin:
+      parseInt(process.env.JWT_ACCESS_EXPIRESIN) || 2592000000, //Segundos
+    jwt_secret: process.env.JWT_SECRETKEY,
+  },
 });

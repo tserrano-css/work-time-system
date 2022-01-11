@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -24,14 +24,31 @@ export class WorkTimeLogsService {
     return this.workTimeLogRepository.save(tempEntity);
   }
 
-  findAll() {
+  async findAll(authUser: User): Promise<WorkTimeLog[]> {
     return this.workTimeLogRepository.find({
-      //relations: ['user'], //para devolver la relacion de user
+      where: {
+        user: {
+          id: authUser.id,
+        },
+      },
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} workTimeLog`;
+  async findOne(id: string, authUser: User): Promise<WorkTimeLog> {
+    const workTimeLog = await this.workTimeLogRepository.findOne({
+      where: {
+        id: id,
+        user: {
+          id: authUser.id,
+        },
+      },
+    });
+
+    if (!workTimeLog) {
+      throw new NotFoundException();
+    }
+
+    return workTimeLog;
   }
 
   update(id: number, updateWorkTimeLogDto: UpdateWorkTimeLogDto) {

@@ -2,10 +2,25 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserAccountDto } from 'src/users/dto/create-user-account.dto';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
+import { LoginResponseDto } from './dto/login-response.dto';
+import { TokenService } from './token.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private usersServices: UsersService) {}
+  constructor(
+    private usersServices: UsersService,
+    private tokenService: TokenService,
+  ) {}
+
+  async generateSuccessAuthenticationResponse(
+    user: User,
+  ): Promise<LoginResponseDto> {
+    const token = await this.tokenService.generateAccessToken(user);
+    return {
+      access_token: token,
+      username: user.username,
+    };
+  }
 
   async validateLoginCredentials(
     username: string,

@@ -10,8 +10,10 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateProjectDto } from './dto/create-project.dbo';
 import { UpdateProjectDto } from './dto/update-project.dbo';
 import { Project } from './entities/project.entity';
@@ -19,6 +21,7 @@ import { ProjectsService } from './projects.service';
 
 @ApiTags('projects')
 @Controller('projects')
+@UseGuards(JwtAuthGuard)
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 

@@ -5,7 +5,6 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Req,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -41,9 +40,6 @@ export class AuthController {
     @AuthUser() user: User,
     @Body() loginDto: CreateLoginDto,
   ): Promise<LoginResponseDto> {
-    console.log(user);
-
-    //devolver token al cliente
-    return null;
+    return await this.authService.generateSuccessAuthenticationResponse(user);
   }
 }
