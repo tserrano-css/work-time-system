@@ -36,31 +36,24 @@ export class WorkTimeLogsController {
   }
 
   @Post()
-  create(@Body() createWorkTimeLogDto: CreateWorkTimeLogDto) {
-    /*
-    const user: User = {
-      id: 2,
-      username: 'miusername',
-      email: 'miusername@gmail.com',
-      password: 'pass',
-      name: 'Alberto',
-      lastName: 'Morales',
-    };
-
-    return this.workTimeLogsService.create(createWorkTimeLogDto, user);
-    */
+  create(
+    @AuthUser() authUser: User,
+    @Body() createWorkTimeLogDto: CreateWorkTimeLogDto,
+  ) {
+    return this.workTimeLogsService.create(createWorkTimeLogDto, authUser);
   }
 
   @Patch(':id')
   update(
+    @AuthUser() authUser: User,
     @Param('id') id: string,
     @Body() updateWorkTimeLogDto: UpdateWorkTimeLogDto,
   ) {
-    return this.workTimeLogsService.update(+id, updateWorkTimeLogDto);
+    return this.workTimeLogsService.update(id, updateWorkTimeLogDto, authUser);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.workTimeLogsService.remove(+id);
+  remove(@AuthUser() authUser: User, @Param('id') id: string) {
+    return this.workTimeLogsService.remove(id, authUser);
   }
 }
