@@ -2,7 +2,6 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserAccountDto } from './dto/create-user-account.dto';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
@@ -44,7 +43,9 @@ export class UsersService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    const queryBuilder = this.userRepository.createQueryBuilder('user');
+    queryBuilder.where(`user.id = :id`, { id });
+    return queryBuilder.getOne();
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

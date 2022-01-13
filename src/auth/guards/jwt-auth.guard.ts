@@ -7,6 +7,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
+  /*
   // Esta funcion es opcional y no hace falta poner-la, pero se puede usar si se quiere validar alguna
   //cosa antes que se valide el token
   //console.log('antes');
@@ -23,4 +24,5 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     }
     return user;
   }
+  */
 }

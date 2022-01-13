@@ -9,5 +9,6 @@ import { ProjectsModule } from 'src/projects/projects.module';
   imports: [TypeOrmModule.forFeature([WorkTimeLog]), ProjectsModule],
   controllers: [WorkTimeLogsController],
   providers: [WorkTimeLogsService],
+  exports: [WorkTimeLogsService],
 })
 export class WorkTimeLogsModule {}
