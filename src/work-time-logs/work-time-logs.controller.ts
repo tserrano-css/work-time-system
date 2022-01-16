@@ -17,6 +17,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { User } from 'src/users/entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { AuthUser } from 'src/common/auth-user.decorator';
+import { WorkTimeLog } from './entities/work-time-log.entity';
+import { WorkTimeLogResponseDto } from './dto/work-time-log-response.dto';
 
 @ApiTags('work-time-logs')
 @Controller('work-time-logs')
@@ -26,8 +28,10 @@ export class WorkTimeLogsController {
   constructor(private readonly workTimeLogsService: WorkTimeLogsService) {}
 
   @Get()
-  findAll(@AuthUser() authUser: User) {
-    return this.workTimeLogsService.findAll(authUser);
+  async findAll(@AuthUser() authUser: User): Promise<WorkTimeLogResponseDto[]> {
+    const entities = await this.workTimeLogsService.findAll(authUser);
+    const dtos = entities.map((entity) => WorkTimeLog.toDto(entity));
+    return dtos;
   }
 
   @Get(':id')

@@ -8,6 +8,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { WorkTimeLogResponseDto } from '../dto/work-time-log-response.dto';
 
 @Entity('work-time-logs')
 export class WorkTimeLog {
@@ -43,4 +44,13 @@ export class WorkTimeLog {
   })
   @JoinColumn({ name: 'project_id', referencedColumnName: 'id' })
   project: Project;
+
+  static toDto(wtl: WorkTimeLog): WorkTimeLogResponseDto {
+    return {
+      id: wtl.id,
+      date: wtl.date,
+      hours: wtl.hours,
+      user: User.toDto(wtl.user),
+    };
+  }
 }
