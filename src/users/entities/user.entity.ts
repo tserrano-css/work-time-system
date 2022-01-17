@@ -11,7 +11,6 @@ import {
 import { UserResponseDto } from '../dto/user-response.dto';
 import * as bcrypt from 'bcrypt';
 import { UserProfile } from './user-profile.entity';
-import { profile } from 'console';
 
 @Entity('users')
 export class User {
@@ -52,6 +51,8 @@ export class User {
       id: user.id,
       username: user.username,
       email: user.email,
+      fullname: `${user.profile.name} ${user.profile.lastName}`,
+      technologies: user.profile.technologies,
       /*lastname: user.lastName,
       name: user.name,*/
     };

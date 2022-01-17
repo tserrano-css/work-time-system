@@ -2,6 +2,9 @@ export class UserResponseDto {
   id: number;
   username: string;
   email: string;
-  name?: string;
+  fullname: string;
+  technologies: string[];
+  /*name?: string;
   lastname?: string;
+  */
 }

@@ -1,6 +1,5 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
-import { CreateUserDto } from './create-user.dto';
 
 export class UpdateUserDto {
   @ApiProperty()
@@ -9,12 +8,12 @@ export class UpdateUserDto {
   name?: string;
 
   @ApiProperty()
-  @IsNumber()
+  @IsString()
   @IsOptional()
   lastName?: string;
 
   @ApiProperty()
-  @IsString()
+  @IsNumber()
   @IsOptional()
   phoneNumber?: number;
 
@@ -25,6 +24,6 @@ export class UpdateUserDto {
 
   @ApiProperty()
   @IsOptional()
-  @IsArray({ each: true })
+  @IsArray()
   gitRepos?: string[];
 }
