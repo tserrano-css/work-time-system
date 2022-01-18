@@ -1,9 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsAlphanumeric,
+  IsArray,
   IsLowercase,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   Length,
   Max,
@@ -38,4 +40,9 @@ export class CreateProjectDto {
   @Max(1000, { message: 'Max value 1000' })
   @IsNotEmpty()
   plannedHours: number;
+
+  @ApiProperty()
+  @IsArray()
+  @IsOptional()
+  categoriesIds?: string[];
 }

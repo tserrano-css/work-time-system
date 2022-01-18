@@ -22,11 +22,13 @@ async function bootstrap() {
     .setTitle('Work Time System example')
     .setDescription('The work time system API description')
     .setVersion('1.0')
+    .addBearerAuth() //para actorizar a swagger y tener que ponner el token de autenticacion para provar la api
     .addTag('auth')
     .addTag('users')
     .addTag('projects')
     .addTag('work-time-logs')
     .addTag('total-time-logs')
+    .addTag('categories')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

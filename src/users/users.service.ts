@@ -81,7 +81,13 @@ export class UsersService {
       throw new UnauthorizedException();
     }
 
-    const tempProfile = this.profileRepository.create(updateUserDto);
+    let tempProfile = await this.profileRepository.preload({
+      ...updateUserDto,
+      user: user,
+    });
+    if (!tempProfile) {
+      tempProfile = this.profileRepository.create(updateUserDto);
+    }
     tempProfile.user = user;
 
     return await this.profileRepository.save(tempProfile);

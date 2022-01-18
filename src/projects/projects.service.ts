@@ -5,6 +5,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CategoriesService } from 'src/categories/categories.service';
+import { Category } from 'src/categories/entities/category.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateProjectDto } from './dto/create-project.dbo';
@@ -20,6 +22,7 @@ export class ProjectsService {
   constructor(
     @InjectRepository(Project)
     private readonly projectRepository: Repository<Project>,
+    private readonly categoriesService: CategoriesService,
   ) {}
 
   getManyProjects(
@@ -55,8 +58,20 @@ export class ProjectsService {
       throw new ConflictException(`La key ${projectDto.key} ya existe`);
     }
 
+    let categories: Category[] = [];
+    if (projectDto.categoriesIds && projectDto.categoriesIds.length > 0) {
+      categories = await this.categoriesService.findByIds(
+        projectDto.categoriesIds,
+      );
+    }
+
     const tempEntity = await this.projectRepository.create(projectDto);
     tempEntity.userId = authUser.id;
+
+    if (categories.length > 0) {
+      tempEntity.categories = categories;
+    }
+
     const objSaved = await this.projectRepository.save(tempEntity);
 
     return this.projectRepository.findOne(objSaved.id);
@@ -80,6 +95,15 @@ export class ProjectsService {
     if (!(preloadProject.userId === authUser.id)) {
       throw new UnauthorizedException('No es dueño del proyecto');
     }
+
+    let categories: Category[] = [];
+    if (updateProjectDto.categoriesIds) {
+      categories = await this.categoriesService.findByIds(
+        updateProjectDto.categoriesIds,
+      );
+    }
+
+    preloadProject.categories = categories;
 
     return this.projectRepository.save(preloadProject);
   }
