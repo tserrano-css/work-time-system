@@ -85,12 +85,18 @@ export class UsersService {
       ...updateUserDto,
       user: user,
     });
+
     if (!tempProfile) {
       tempProfile = this.profileRepository.create(updateUserDto);
     }
     tempProfile.user = user;
 
-    return await this.profileRepository.save(tempProfile);
+    await this.profileRepository.save(tempProfile);
+
+    return this.userRepository.findOne({
+      where: { username },
+      relations: ['profile'],
+    });
   }
 
   remove(id: number) {
