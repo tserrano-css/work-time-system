@@ -27,7 +27,10 @@ export class User {
   @Column({ type: 'varchar', unique: true })
   email: string;
 
-  @OneToOne(() => UserProfile, (profile) => profile.user)
+  @Column({ type: 'text', array: true, default: ['user'] })
+  roles: string[];
+
+  @OneToOne(() => UserProfile, (profile) => profile.user, { eager: true })
   profile: UserProfile;
 
   @OneToMany(() => WorkTimeLog, (workTimeLog) => workTimeLog.user)
@@ -51,8 +54,10 @@ export class User {
       id: user.id,
       username: user.username,
       email: user.email,
-      fullname: `${user.profile.name} ${user.profile.lastName}`,
-      technologies: user.profile.technologies,
+      fullname: user.profile
+        ? `${user.profile.name} ${user.profile.lastName}`
+        : null,
+      technologies: user.profile ? user.profile.technologies : null,
       /*lastname: user.lastName,
       name: user.name,*/
     };

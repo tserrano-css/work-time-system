@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Role } from 'src/roles/role.enum';
 import { Repository } from 'typeorm';
 import { CreateUserAccountDto } from './dto/create-user-account.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -46,8 +47,10 @@ export class UsersService {
     return queryBuilder.getOne();
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll(): Promise<User[]> {
+    return await this.userRepository.find({
+      relations: ['profile'],
+    });
   }
 
   findOne(id: number) {

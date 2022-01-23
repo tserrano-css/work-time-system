@@ -17,23 +17,25 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthUser } from 'src/common/auth-user.decorator';
 import { User } from './entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Roles } from 'src/roles/roles.decorators';
+import { Role } from 'src/roles/role.enum';
+import { RolesGuard } from 'src/common/roles.guard';
+import { UserResponseDto } from './dto/user-response.dto';
 
 @ApiTags('users')
 @ApiBearerAuth('JWT')
 @Controller('users')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  create(@Body() dto: CreateUserAccountDto) {
-    //return this.usersService.create(dto);
-  }
-
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  @Roles(Role.Admin) //Validación de roles con el metodo de RBAC
+  async findAll(): Promise<UserResponseDto[]> {
+    const users = await this.usersService.findAll();
+    const res = users.map((user) => User.toDto(user));
+    return res;
   }
 
   @Get(':username')
