@@ -1,4 +1,10 @@
-import { Controller, Get, Response, StreamableFile, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Response,
+  StreamableFile,
+  UseGuards,
+} from '@nestjs/common';
 import { TotalTimeLogsService } from './total-time-logs.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';

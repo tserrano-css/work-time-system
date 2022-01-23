@@ -21,8 +21,11 @@ import { RolesGuard } from './common/roles.guard';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) =>
-        configService.get('database'),
+      useFactory: (configService: ConfigService) => ({
+        ...configService.get('database'),
+        logger: 'file', //con este hacemos el log en fichero, sin esto en consola. Estos dos mejor en el config.
+        logging: ['query'], //para hacer un log de las llamadas a la base de datos
+      }),
     }),
     /*
     TypeOrmModule.forRoot({
