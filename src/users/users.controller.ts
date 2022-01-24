@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   UseGuards,
+  Version,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -24,15 +25,26 @@ import { UserResponseDto } from './dto/user-response.dto';
 
 @ApiTags('users')
 @ApiBearerAuth('JWT')
-@Controller('users')
+@Controller({
+  path: 'users',
+  //version: '1', //Se puede especificar a nivel de controlador o de metodo
+})
 @UseInterceptors(ClassSerializerInterceptor)
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Version('1') //Versionado a nivel de metodo
   @Get()
   @Roles(Role.Admin) //Validación de roles con el metodo de RBAC
-  async findAll(): Promise<UserResponseDto[]> {
+  async findAllv1(): Promise<User[]> {
+    return await this.usersService.findAll();
+  }
+
+  @Version(['2', '3']) //Versionado a nivel de metodo
+  @Get()
+  @Roles(Role.Admin) //Validación de roles con el metodo de RBAC
+  async findAllv2(): Promise<UserResponseDto[]> {
     const users = await this.usersService.findAll();
     const res = users.map((user) => User.toDto(user));
     return res;

@@ -24,7 +24,7 @@ import { RolesGuard } from './common/roles.guard';
       useFactory: (configService: ConfigService) => ({
         ...configService.get('database'),
         logger: 'file', //con este hacemos el log en fichero, sin esto en consola. Estos dos mejor en el config.
-        logging: ['query'], //para hacer un log de las llamadas a la base de datos
+        logging: ['error'], //para hacer un log de las llamadas a la base de datos
       }),
     }),
     /*

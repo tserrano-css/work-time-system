@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -17,6 +17,16 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+
+  //Para habilitar el versionado de la API
+  app.enableVersioning({
+    //type: VersioningType.URI, //Tipo de versionado
+
+    //type: VersioningType.HEADER, header: 'version',
+
+    type: VersioningType.MEDIA_TYPE,
+    key: 'v=',
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Work Time System example')
