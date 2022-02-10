@@ -5,9 +5,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CategoriesService } from 'src/categories/categories.service';
-import { Category } from 'src/categories/entities/category.entity';
-import { User } from 'src/users/entities/user.entity';
+import { CategoriesService } from '../categories/categories.service';
+import { Category } from '../categories/entities/category.entity';
+import { User } from '../users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateProjectDto } from './dto/create-project.dbo';
 import { UpdateProjectDto } from './dto/update-project.dbo';

@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { WorkTimeLog } from 'src/work-time-logs/entities/work-time-log.entity';
+import { WorkTimeLog } from '../../work-time-logs/entities/work-time-log.entity';
 import {
   BeforeInsert,
   Column,

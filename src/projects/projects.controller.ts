@@ -15,9 +15,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { AuthUser } from 'src/common/auth-user.decorator';
-import { User } from 'src/users/entities/user.entity';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { AuthUser } from '../common/auth-user.decorator';
+import { User } from '../users/entities/user.entity';
 import { UserProjectAffiliation } from './decorators/user-project-affiliation.decorator';
 import { CreateProjectDto } from './dto/create-project.dbo';
 import { UpdateProjectDto } from './dto/update-project.dbo';
