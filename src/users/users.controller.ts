@@ -10,10 +10,10 @@ import {
   ClassSerializerInterceptor,
   UseGuards,
   Version,
+  UploadedFile,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateUserAccountDto } from './dto/create-user-account.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthUser } from 'src/common/auth-user.decorator';
 import { User } from './entities/user.entity';
@@ -22,6 +22,9 @@ import { Roles } from 'src/roles/roles.decorators';
 import { Role } from 'src/roles/role.enum';
 import { RolesGuard } from 'src/common/roles.guard';
 import { UserResponseDto } from './dto/user-response.dto';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import * as fs from 'fs';
+import { diskStorage } from 'multer';
 
 @ApiTags('users')
 @ApiBearerAuth('JWT')
@@ -71,5 +74,23 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
+  }
+
+  @Post(':username/profile-picture')
+  @UseInterceptors(
+    //FileInterceptor('file') //Una manera
+
+    //otra manera
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './files',
+      }),
+    }),
+  )
+  uploadPicture(@UploadedFile() file: Express.Multer.File) {
+    //Se necesita la libreria multer de nest. Mirar doc de Nest
+    console.log(file);
+    // implementación de storage del fichero. Tendria que estar en el servicio.
+    // fs.writeFileSync('new-image.png', file.buffer.toString());
   }
 }
