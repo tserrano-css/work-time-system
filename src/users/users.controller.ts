@@ -22,9 +22,9 @@ import { Roles } from 'src/roles/roles.decorators';
 import { Role } from 'src/roles/role.enum';
 import { RolesGuard } from 'src/common/roles.guard';
 import { UserResponseDto } from './dto/user-response.dto';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import * as fs from 'fs';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+//import * as fs from 'fs';
 
 @ApiTags('users')
 @ApiBearerAuth('JWT')
