@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  UnauthorizedException,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -14,8 +15,10 @@ import { CreateUserAccountDto } from 'src/users/dto/create-user-account.dto';
 import { UserResponseDto } from 'src/users/dto/user-response.dto';
 import { User } from 'src/users/entities/user.entity';
 import { AuthService } from './auth.service';
+import { RenewAccessTokenResponse } from './dto/authenticationResponse';
 import { CreateLoginDto } from './dto/create-login.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 
 @ApiTags('auth')
@@ -41,5 +44,18 @@ export class AuthController {
     @Body() loginDto: CreateLoginDto,
   ): Promise<LoginResponseDto> {
     return await this.authService.generateSuccessAuthenticationResponse(user);
+  }
+
+  @Post('/refresh-tokens')
+  public async refreshAccessToken(
+    @Body() refreshTokenDto: RefreshTokenDto,
+  ): Promise<RenewAccessTokenResponse> {
+    const resultPayload: RenewAccessTokenResponse =
+      await this.authService.rotateTokens(refreshTokenDto.refreshToken);
+
+    if (!resultPayload) {
+      throw new UnauthorizedException();
+    }
+    return resultPayload;
   }
 }

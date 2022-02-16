@@ -10,3 +10,11 @@ export class TokensPayload {
   @ApiProperty()
   refresh_token?: string;
 }
+
+export class RenewAccessTokenResponse {
+  @ApiProperty()
+  username: string;
+
+  @ApiProperty()
+  payload: TokensPayload;
+}

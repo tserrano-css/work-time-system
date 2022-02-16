@@ -38,6 +38,14 @@ export class UsersService {
     return this.userRepository.save(tempEntity);
   }
 
+  getOneUser(username: string): Promise<User> {
+    return this.userRepository.findOne({
+      where: {
+        username: username,
+      },
+    });
+  }
+
   getOneUserIncludingPass(username: string): Promise<User> {
     const queryBuilder = this.userRepository.createQueryBuilder('user'); //user es un alias para las consultas
     queryBuilder
